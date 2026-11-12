@@ -1,0 +1,107 @@
+================================================================================
+  PROYECTO: TECH STORE GUATEMALA + PROMETHEUS + GRAFANA (GRUPO #3)
+  Curso: Introducción a la Telemática - 2026
+================================================================================
+
+¡BIENVENIDO! Este paquete contiene TODO lo necesario para levantar el proyecto
+completo en cualquier computadora con Windows y Docker Desktop instalado.
+
+--------------------------------------------------------------------------------
+1. REQUISITOS PREVIOS EN LA OTRA PC
+--------------------------------------------------------------------------------
+1. Tener instalado y abierto "Docker Desktop".
+   (Si es la primera vez que abres Docker Desktop, espera a que el icono de la
+   ballena en la barra de tareas se ponga en verde / "Engine running").
+
+--------------------------------------------------------------------------------
+2. CÓMO INICIAR EL PROYECTO (1 SOLO CLIC)
+--------------------------------------------------------------------------------
+1. Descomprime esta carpeta en cualquier ubicación (por ejemplo, en el Escritorio
+   o en C:\xampp\htdocs\telematica\prometheus).
+2. Haz DOBLE CLIC en el archivo:
+   👉 INICIAR_PROYECTO.bat
+
+3. El script automáticamente:
+   - Verificará que Docker Desktop esté encendido.
+   - Creará la red de observabilidad (`observability-net`).
+   - Levantará los contenedores de la tienda (`portal-db`, `portal-web`, `portal-phpmyadmin`).
+   - Levantará la suite de observabilidad (`prometheus`, `grafana`, `ecommerce-exporter`, `node-exporter`).
+   - Abrirá automáticamente las ventanas en tu navegador predeterminado.
+
+--------------------------------------------------------------------------------
+3. ENLACES Y CREDENCIALES DE ACCESO
+--------------------------------------------------------------------------------
+A) TIENDA VIRTUAL (TECH STORE GUATEMALA):
+   - URL Tienda: http://localhost:8085/tienda
+   - Login de Usuarios: http://localhost:8085/login
+   - Panel de Administración: http://localhost:8085/admin.php
+   - Usuario Administrador: admin | Contraseña: Admin@2026
+   - Integrantes del Equipo (Portal & Grafana):
+     * carlos.lopez       | Dev1@Grupo3
+     * victor.castillo    | Dba2@Grupo3
+     * oscar.ortiz        | Dev3@Grupo3
+     * emmanuel.ajsivinac | Qa4@Grupo3
+   - Métricas en vivo del portal: http://localhost:8085/api.php?action=prometheus
+
+B) GRAFANA (DASHBOARDS Y KPIS):
+   - URL: http://localhost:3000
+   - Usuario Administrador: admin
+   - Contraseña: admin123 (o cualquiera de los usuarios del Grupo #3 arriba indicados)
+   - Tableros listos:
+     1) "💻 Tech Store — Observabilidad E-commerce de Cómputo (MySQL + Prometheus)"
+     2) "Observabilidad de la Gestión de Pedidos E-commerce — Grupo #3 (K01–K10)"
+
+C) PROMETHEUS (TSDB Y REGLAS DE ALERTA):
+   - URL: http://localhost:9090
+   - Alertas activas: http://localhost:9090/alerts
+   - Objetivos monitoreados (Targets UP): http://localhost:9090/targets
+
+D) EXPORTADOR DE NEGOCIO (K01 - K10):
+   - Métricas: http://localhost:9101/metrics
+   - Estado JSON: http://localhost:9101/api/status
+
+E) PHPMYADMIN (BASE DE DATOS MYSQL):
+   - URL: http://localhost:8086
+   - Servidor: portal-db
+   - Usuario: pulso_user
+   - Contraseña: Pulso@2026
+   - BD: digyfenix_pulso
+
+--------------------------------------------------------------------------------
+4. GUIONES Y PRUEBAS PARA LA EXPOSICIÓN EN VIVO
+--------------------------------------------------------------------------------
+• DEMOSTRAR CAÍDA Y ALERTA EN VIVO:
+  Haz doble clic en:
+  👉 PAUSAR_PORTAL.bat
+  - Simula que la tienda Tech Store se cayó.
+  - En Grafana verás el panel de estado ponerse en ROJO ("PORTAL WEB CAÍDO").
+  - En Prometheus verás activarse la alerta crítica: PortalEcommerceDown.
+
+• RECUPERAR EL SERVICIO EN VIVO:
+  Haz doble clic en:
+  👉 INICIAR_PORTAL.bat
+  - El portal se reinicia en 5 segundos.
+  - Grafana vuelve a VERDE ("EN LÍNEA").
+  - La alerta se auto-resuelve.
+
+• DETENER TODO AL TERMINAR LA EXPOSICIÓN:
+  Haz doble clic en:
+  👉 PAUSAR_PROYECTO.bat
+
+--------------------------------------------------------------------------------
+5. ¿LA OTRA PC NO TIENE INTERNET EL DÍA DE LA EXPOSICIÓN?
+--------------------------------------------------------------------------------
+Si la computadora de la universidad o del aula no tendrá acceso a Internet:
+1. En esta máquina (con internet), ejecuta:
+   👉 EXPORTAR_IMAGENES_OFFLINE.bat
+   (Generará el archivo "imagenes_docker_offline.tar" con las 7 imágenes).
+2. Lleva ese archivo junto con esta carpeta en una memoria USB.
+3. En la otra PC (sin internet), ejecuta:
+   👉 IMPORTAR_IMAGENES_OFFLINE.bat
+4. Luego ejecuta "INICIAR_PROYECTO.bat" y funcionará 100% desconectado.
+
+--------------------------------------------------------------------------------
+Para ver el guión detallado paso a paso para la presentación, lee el archivo:
+👉 MANUAL_PASO_A_PASO.md
+================================================================================
+

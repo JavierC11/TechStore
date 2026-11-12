@@ -1,0 +1,311 @@
+# ==============================================================================
+# REGLAS PROMQL Y ALERTAS DE OBSERVABILIDAD (CAPA DE NEGOCIO K01-K10 & TÉCNICA)
+# Proyecto: Observabilidad de la Gestión de Pedidos E-commerce — Grupo #3
+# ==============================================================================
+
+groups:
+  - name: ecommerce_kpis_recording_rules
+    interval: 5s
+    rules:
+      # K01: Volumen de solicitudes en últimas 24h (solicitudes/24h)
+      - record: negocio:k01_volumen_diario_solicitudes:val
+        expr: ecommerce_kpi_k01_volumen_diario_solicitudes
+
+      # K02: Calidad de datos del cliente (%)
+      - record: negocio:k02_porcentaje_datos_validos:pct
+        expr: ecommerce_kpi_k02_porcentaje_datos_validos
+
+      # K03: Disponibilidad de stock en validación (%)
+      - record: negocio:k03_disponibilidad_stock:pct
+        expr: ecommerce_kpi_k03_disponibilidad_stock_pct
+
+      # K04: Efectividad de creación de pedidos (%)
+      - record: negocio:k04_efectividad_creacion_pedidos:pct
+        expr: ecommerce_kpi_k04_efectividad_creacion_pedidos_pct
+
+      # K05: Tasa de abandono en checkout (%)
+      - record: negocio:k05_tasa_abandono_checkout:pct
+        expr: ecommerce_kpi_k05_tasa_abandono_checkout_pct
+
+      # K06: Ticket promedio de compra (GTQ)
+      - record: negocio:k06_ticket_promedio_compra:gtq
+        expr: ecommerce_kpi_k06_ticket_promedio_compra_quetzales
+
+      # K07: Liquidaciones a tiempo <= 60 min (%)
+      - record: negocio:k07_liquidaciones_en_plazo:pct
+        expr: ecommerce_kpi_k07_liquidaciones_en_plazo_pct
+
+      # K08: Tiempo medio de empaque (min)
+      - record: negocio:k08_tiempo_promedio_empaque:min
+        expr: ecommerce_kpi_k08_tiempo_promedio_empaque_min
+
+      # K09: Cumplimiento de despacho en plazo <= 8h (%)
+      - record: negocio:k09_cumplimiento_despacho_plazo:pct
+        expr: ecommerce_kpi_k09_cumplimiento_despacho_plazo_pct
+
+      # K10: Lead Time Order-to-Dispatch (horas)
+      - record: negocio:k10_lead_time_order_dispatch:horas
+        expr: ecommerce_kpi_k10_lead_time_order_dispatch_horas
+
+  - name: ecommerce_business_alerts
+    interval: 15s
+    rules:
+      # Alerta K01: Volumen de solicitudes (< 100 Amarillo, < 70 Rojo)
+      - alert: K01_VolumenSolicitudesBajo
+        expr: ecommerce_kpi_k01_volumen_diario_solicitudes < 100 and ecommerce_kpi_k01_volumen_diario_solicitudes >= 70
+        for: 30s
+        labels:
+          severity: warning
+          semaforo: AMARILLO
+          kpi: K01
+          carril: "Cliente"
+        annotations:
+          summary: "K01 AMARILLO: Volumen de solicitudes por debajo de la meta (< 100/24h)"
+          description: "Solicitudes en últimas 24h: {{ $value }}."
+
+      - alert: K01_VolumenSolicitudesCritico
+        expr: ecommerce_kpi_k01_volumen_diario_solicitudes < 70 and techstore_mysql_enlace_activo == 1
+        for: 30s
+        labels:
+          severity: critical
+          semaforo: ROJO
+          kpi: K01
+          carril: "Cliente"
+        annotations:
+          summary: "K01 ROJO: Caída crítica de demanda (< 70 solicitudes/24h)"
+          description: "El volumen en las últimas 24h es {{ $value }}. Revisar campañas y tráfico en tienda."
+
+      # Alerta K02: Calidad de datos del cliente
+      - alert: K02_CalidadDatosAdvertencia
+        expr: ecommerce_kpi_k02_porcentaje_datos_validos < 98 and ecommerce_kpi_k02_porcentaje_datos_validos >= 95
+        for: 15s
+        labels:
+          severity: warning
+          semaforo: AMARILLO
+          kpi: K02
+          carril: "Sistema E-commerce"
+        annotations:
+          summary: "K02 AMARILLO: Calidad de datos en rango de advertencia (< 98%)"
+          description: "Porcentaje de datos válidos es {{ $value | printf \"%.2f\" }}%."
+
+      - alert: K02_CalidadDatosCritico
+        expr: ecommerce_kpi_k02_porcentaje_datos_validos < 95 and ecommerce_p2_solicitudes_evaluadas_total > 0
+        for: 15s
+        labels:
+          severity: critical
+          semaforo: ROJO
+          kpi: K02
+          carril: "Sistema E-commerce"
+        annotations:
+          summary: "K02 ROJO: Alta tasa de errores de datos en checkout/pedidos (< 95%)"
+          description: "Porcentaje de datos válidos es {{ $value | printf \"%.2f\" }}%. Revisar validaciones en formulario."
+
+      # Alerta K03: Disponibilidad de stock
+      - alert: K03_DisponibilidadStockAdvertencia
+        expr: ecommerce_kpi_k03_disponibilidad_stock_pct < 97 and ecommerce_kpi_k03_disponibilidad_stock_pct >= 90
+        for: 15s
+        labels:
+          severity: warning
+          semaforo: AMARILLO
+          kpi: K03
+          carril: "Sistema E-commerce"
+        annotations:
+          summary: "K03 AMARILLO: Quiebre parcial de inventario (< 97%)"
+          description: "Disponibilidad de stock es {{ $value | printf \"%.2f\" }}%. Generar orden de reabastecimiento."
+
+      - alert: K03_DisponibilidadStockCritico
+        expr: ecommerce_kpi_k03_disponibilidad_stock_pct < 90 and ecommerce_p3_solicitudes_con_stock_total + ecommerce_p3_solicitudes_sin_stock_total > 0
+        for: 15s
+        labels:
+          severity: critical
+          semaforo: ROJO
+          kpi: K03
+          carril: "Sistema E-commerce"
+        annotations:
+          summary: "K03 ROJO: Quiebre crítico de stock (< 90%)"
+          description: "Disponibilidad de stock cayó a {{ $value | printf \"%.2f\" }}%. Bloqueo severo en compras."
+
+      # Alerta K04: Efectividad de creación de pedidos
+      - alert: K04_EfectividadCreacionCritica
+        expr: ecommerce_kpi_k04_efectividad_creacion_pedidos_pct < 97 and ecommerce_p4_pedidos_creados_total + ecommerce_p4_pedidos_fallidos_creacion_total > 0
+        for: 15s
+        labels:
+          severity: critical
+          semaforo: ROJO
+          kpi: K04
+          carril: "Sistema E-commerce"
+        annotations:
+          summary: "K04 ROJO: Fallo en conversión de solicitudes elegibles a pedidos (< 97%)"
+          description: "Efectividad de creación es {{ $value | printf \"%.2f\" }}%. Auditar transacciones y pasarela."
+
+      # Alerta K05: Tasa de abandono en checkout
+      - alert: K05_AbandonoCheckoutAlto
+        expr: ecommerce_kpi_k05_tasa_abandono_checkout_pct > 20 and ecommerce_kpi_k05_tasa_abandono_checkout_pct <= 30
+        for: 15s
+        labels:
+          severity: warning
+          semaforo: AMARILLO
+          kpi: K05
+          carril: "Cliente / E-commerce"
+        annotations:
+          summary: "K05 AMARILLO: Tasa de abandono en checkout superior al 20%"
+          description: "Abandono en checkout es {{ $value | printf \"%.2f\" }}%. Evaluar fricción en formulario."
+
+      - alert: K05_AbandonoCheckoutCritico
+        expr: ecommerce_kpi_k05_tasa_abandono_checkout_pct > 30
+        for: 15s
+        labels:
+          severity: critical
+          semaforo: ROJO
+          kpi: K05
+          carril: "Cliente / E-commerce"
+        annotations:
+          summary: "K05 ROJO: Abandono crítico en checkout (> 30%)"
+          description: "Abandono en checkout alcanzó {{ $value | printf \"%.2f\" }}%. Acción urgente requerida."
+
+      # Alerta K06: Ticket promedio de compra
+      - alert: K06_TicketPromedioBajo
+        expr: ecommerce_kpi_k06_ticket_promedio_compra_quetzales < 150 and ecommerce_p4_pedidos_creados_total > 0
+        for: 30s
+        labels:
+          severity: critical
+          semaforo: ROJO
+          kpi: K06
+          carril: "Sistema E-commerce"
+        annotations:
+          summary: "K06 ROJO: Ticket promedio por debajo de Q 150"
+          description: "El ticket promedio actual es Q {{ $value | printf \"%.2f\" }}."
+
+      # Alerta K07: Liquidaciones en plazo
+      - alert: K07_LiquidacionesFueraPlazoAdvertencia
+        expr: ecommerce_kpi_k07_liquidaciones_en_plazo_pct < 95 and ecommerce_kpi_k07_liquidaciones_en_plazo_pct >= 85
+        for: 15s
+        labels:
+          severity: warning
+          semaforo: AMARILLO
+          kpi: K07
+          carril: "Almacen / Logistica"
+        annotations:
+          summary: "K07 AMARILLO: Liquidaciones a tiempo por debajo del 95%"
+          description: "Liquidaciones en plazo <= 60 min: {{ $value | printf \"%.2f\" }}%."
+
+      - alert: K07_LiquidacionesFueraPlazoCritico
+        expr: ecommerce_kpi_k07_liquidaciones_en_plazo_pct < 85 and ecommerce_p5_liquidaciones_en_plazo_total + ecommerce_p5_liquidaciones_fuera_plazo_total > 0
+        for: 15s
+        labels:
+          severity: critical
+          semaforo: ROJO
+          kpi: K07
+          carril: "Almacen / Logistica"
+        annotations:
+          summary: "K07 ROJO: Cuello de botella crítico en aprobaciones y liquidación (< 85%)"
+          description: "Liquidaciones en plazo <= 60 min cayeron a {{ $value | printf \"%.2f\" }}%."
+
+      # Alerta K08: Tiempo medio de empaque
+      - alert: K08_TiempoEmpaqueAdvertencia
+        expr: ecommerce_kpi_k08_tiempo_promedio_empaque_min > 30 and ecommerce_kpi_k08_tiempo_promedio_empaque_min <= 45
+        for: 15s
+        labels:
+          severity: warning
+          semaforo: AMARILLO
+          kpi: K08
+          carril: "Almacen / Logistica"
+        annotations:
+          summary: "K08 AMARILLO: Tiempo medio de empaque supera la meta (30 min)"
+          description: "El tiempo medio de empaque es {{ $value | printf \"%.1f\" }} min. Reforzar mesas de empaque."
+
+      - alert: K08_TiempoEmpaqueCritico
+        expr: ecommerce_kpi_k08_tiempo_promedio_empaque_min > 45
+        for: 15s
+        labels:
+          severity: critical
+          semaforo: ROJO
+          kpi: K08
+          carril: "Almacen / Logistica"
+        annotations:
+          summary: "K08 ROJO: Cuello de botella crítico en empaque (> 45 min)"
+          description: "El tiempo medio de empaque subió a {{ $value | printf \"%.1f\" }} min."
+
+      # Alerta K09: Cumplimiento de despacho
+      - alert: K09_CumplimientoDespachoAdvertencia
+        expr: ecommerce_kpi_k09_cumplimiento_despacho_plazo_pct < 95 and ecommerce_kpi_k09_cumplimiento_despacho_plazo_pct >= 85
+        for: 15s
+        labels:
+          severity: warning
+          semaforo: AMARILLO
+          kpi: K09
+          carril: "Almacen / Logistica"
+        annotations:
+          summary: "K09 AMARILLO: Cumplimiento de despacho por debajo del 95%"
+          description: "Despacho a tiempo es {{ $value | printf \"%.2f\" }}%. Agilizar salida de rutas."
+
+      - alert: K09_CumplimientoDespachoCritico
+        expr: ecommerce_kpi_k09_cumplimiento_despacho_plazo_pct < 85 and ecommerce_p7_despachos_en_plazo_total + ecommerce_p7_despachos_fuera_plazo_total > 0
+        for: 15s
+        labels:
+          severity: critical
+          semaforo: ROJO
+          kpi: K09
+          carril: "Almacen / Logistica"
+        annotations:
+          summary: "K09 ROJO: Retraso grave en despachos (< 85%)"
+          description: "Cumplimiento de despacho cayó a {{ $value | printf \"%.2f\" }}%."
+
+      # Alerta K10: Lead Time Order-to-Dispatch
+      - alert: K10_LeadTimeDespachoAlto
+        expr: ecommerce_kpi_k10_lead_time_order_dispatch_horas > 4 and ecommerce_kpi_k10_lead_time_order_dispatch_horas <= 6
+        for: 15s
+        labels:
+          severity: warning
+          semaforo: AMARILLO
+          kpi: K10
+          carril: "Almacen / Logistica"
+        annotations:
+          summary: "K10 AMARILLO: Lead Time Order-to-Dispatch superior a 4 horas"
+          description: "Lead Time actual: {{ $value | printf \"%.2f\" }} h."
+
+      - alert: K10_LeadTimeDespachoCritico
+        expr: ecommerce_kpi_k10_lead_time_order_dispatch_horas > 6
+        for: 15s
+        labels:
+          severity: critical
+          semaforo: ROJO
+          kpi: K10
+          carril: "Almacen / Logistica"
+        annotations:
+          summary: "K10 ROJO: Lead Time Order-to-Dispatch crítico (> 6 h)"
+          description: "El ciclo desde solicitud hasta despacho promedia {{ $value | printf \"%.2f\" }} h."
+
+      # Alertas Infraestructura: Tech Store Portal Web, MySQL y Exporter
+      - alert: TechStore_PortalWeb_Caido
+        expr: up{job="portal-pulso-mysql"} == 0
+        for: 10s
+        labels:
+          severity: critical
+          semaforo: ROJO
+          componente: "portal-web"
+        annotations:
+          summary: "🚨 ALERTA CRÍTICA: Portal E-commerce Tech Store (portal-web:80) NO RESPONDE"
+          description: "Prometheus perdió comunicación con el contenedor portal-web de Tech Store."
+
+      - alert: TechStore_MySQL_Caido
+        expr: pulso_mysql_up == 0 or techstore_mysql_enlace_activo == 0
+        for: 10s
+        labels:
+          severity: critical
+          semaforo: ROJO
+          componente: "portal-db"
+        annotations:
+          summary: "🚨 ALERTA CRÍTICA: Base de datos MySQL de Tech Store NO RESPONDE"
+          description: "El portal de e-commerce perdió conexión con MariaDB/MySQL. Ventas e inventario detenidos."
+
+      - alert: TechStore_Exporter_Caido
+        expr: up{job="ecommerce-pedidos"} == 0
+        for: 10s
+        labels:
+          severity: critical
+          semaforo: ROJO
+          componente: "ecommerce-exporter"
+        annotations:
+          summary: "🚨 ALERTA CRÍTICA: Exportador K01-K10 (ecommerce-exporter) NO RESPONDE"
+          description: "El servicio exportador de métricas K01-K10 no responde en el puerto 9101."

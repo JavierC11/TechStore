@@ -1,0 +1,76 @@
+# ==============================================================================
+# PROYECTO GRUPAL: Observabilidad de la Gestión de Pedidos E-commerce
+# CURSO: Introducción a la Telemática — Grupo #3
+# INTEGRANTES:
+#   - Carlos Daniel López Hernández (096-19-5203) - Desarrollador / DevOps
+#   - Victor Javier Castillo (092-19-7011) - DBA
+#   - Oscar Geovany Ortíz Barillas (092-17-6969) - Desarrollador
+#   - Emmanuel Alexander Ajsivinac Yoc (092-20-7654) - Implementador & QA Lead
+# ==============================================================================
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    proyecto: "Observabilidad_Pedidos_Ecommerce"
+    curso: "Introduccion_a_la_Telematica"
+    grupo: "Grupo_3"
+
+# Reglas de grabación PromQL y alertas de negocio (K01 - K10) e infraestructura
+rule_files:
+  - "/etc/prometheus/rules/ecommerce_rules.yml"
+
+scrape_configs:
+  # 1. Auto-monitoreo del servidor Prometheus
+  - job_name: prometheus
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          componente: 'prometheus-server'
+          capa: 'tecnologica'
+
+  # 2. Métricas del Sistema Operativo Host vía Node Exporter
+  - job_name: node
+    static_configs:
+      - targets: ['node-exporter:9100']
+        labels:
+          componente: 'node-exporter'
+          capa: 'tecnologica'
+
+  # 3. Exportador de Observabilidad de Negocio E-commerce (KPIs reales K01-K10 y Puntos P1-P7)
+  - job_name: ecommerce-pedidos
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['ecommerce-exporter:9101']
+        labels:
+          componente: 'ecommerce-business-exporter'
+          capa: 'negocio'
+          proceso: 'gestion-pedidos-ecommerce'
+
+  # 4. Métricas en vivo desde el Portal PHP + MySQL Tech Store
+  - job_name: portal-pulso-mysql
+    scrape_interval: 5s
+    metrics_path: /api.php
+    params:
+      action: ['prometheus']
+    static_configs:
+      - targets: ['portal-web:80']
+        labels:
+          componente: 'portal-php-mysql'
+          capa: 'aplicacion-bd'
+
+  # 5. Telemetría del motor de visualización Grafana
+  - job_name: grafana
+    static_configs:
+      - targets: ['grafana:3000']
+        labels:
+          componente: 'grafana-server'
+          capa: 'visualizacion'
+
+  # 6. Pruebas de carga sintéticas con Avalanche (Opcional - ejecutar con docker-compose.benchmark.yml)
+  # - job_name: avalanche
+  #   static_configs:
+  #     - targets: ['avalanche:9001']
+  #       labels:
+  #         componente: 'avalanche-load-tester'
+  #         capa: 'benchmarking'

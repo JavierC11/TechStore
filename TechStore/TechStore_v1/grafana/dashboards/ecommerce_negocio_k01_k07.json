@@ -1,0 +1,1566 @@
+{
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": {
+                    "type": "grafana",
+                    "uid": "-- Grafana --"
+                },
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
+            }
+        ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 1,
+    "id": null,
+    "links": [
+        {
+            "asDropdown": false,
+            "icon": "shopping-cart",
+            "includeVars": false,
+            "keepTime": true,
+            "tags": [],
+            "targetBlank": true,
+            "title": "💻 Tablero Tech Store en Grafana",
+            "tooltip": "Ver telemetría del catálogo de cómputo y ventas reales MySQL",
+            "type": "link",
+            "url": "/d/portal-computo-mysql-g3"
+        },
+        {
+            "asDropdown": false,
+            "icon": "external link",
+            "includeVars": false,
+            "keepTime": false,
+            "tags": [],
+            "targetBlank": true,
+            "title": "🛒 Tech Store en Línea (Puerto 8085)",
+            "tooltip": "Abrir tienda de cómputo en línea",
+            "type": "link",
+            "url": "http://localhost:8085/tienda"
+        },
+        {
+            "asDropdown": false,
+            "icon": "external link",
+            "includeVars": false,
+            "keepTime": false,
+            "tags": [],
+            "targetBlank": true,
+            "title": "⚙️ Panel Admin Tech Store (8085)",
+            "tooltip": "Abrir administración y tablero comercial del portal",
+            "type": "link",
+            "url": "http://localhost:8085/admin"
+        },
+        {
+            "asDropdown": false,
+            "icon": "bolt",
+            "includeVars": false,
+            "keepTime": false,
+            "tags": [],
+            "targetBlank": true,
+            "title": "🎛️ Exportador MySQL / Simulador K01–K10 (9101)",
+            "tooltip": "Ver fuente de datos en vivo MySQL y simulador manual de alertas",
+            "type": "link",
+            "url": "http://localhost:9101"
+        },
+        {
+            "asDropdown": false,
+            "icon": "dashboard",
+            "includeVars": false,
+            "keepTime": true,
+            "tags": [],
+            "targetBlank": false,
+            "title": "📈 Manual Técnico TSDB & Host",
+            "tooltip": "Ver métricas internas de Prometheus y Node Exporter",
+            "type": "link",
+            "url": "/d/prometheus-manual-tecnico-g3"
+        },
+        {
+            "asDropdown": false,
+            "icon": "fire",
+            "includeVars": false,
+            "keepTime": false,
+            "tags": [],
+            "targetBlank": true,
+            "title": "🔥 Consola Prometheus (9090)",
+            "tooltip": "Abrir interfaz web de Prometheus",
+            "type": "link",
+            "url": "http://localhost:9090"
+        }
+    ],
+    "panels": [
+        {
+            "gridPos": {
+                "h": 5,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 1,
+            "options": {
+                "code": {
+                    "language": "plaintext",
+                    "showLineNumbers": false,
+                    "showMiniMap": false
+                },
+                "content": "<div style=\"background:linear-gradient(135deg,#0a1b3f 0%,#1e3a8a 50%,#2563eb 100%);padding:16px 22px;border-radius:10px;color:#fff;font-family:'Segoe UI',sans-serif;box-shadow:0 4px 14px rgba(0,0,0,0.25);border:1px solid #3b82f6;\">\n  <div style=\"display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;\">\n    <div>\n      <div style=\"font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:#93c5fd;font-weight:700;\">INTRODUCCIÓN A LA TELEMÁTICA · PROYECTO GRUPAL · GRUPO #3 · TELEMETRÍA REAL MYSQL</div>\n      <div style=\"font-size:22px;font-weight:800;margin-top:2px;\">Observabilidad de la Gestión de Pedidos E-commerce (Capa de Negocio K01–K10)</div>\n      <div style=\"font-size:12px;opacity:0.92;margin-top:4px;\">Modelo Telemático: <strong>1·EVENTO &rarr; 2·KPI &rarr; 3·UMBRAL &rarr; 4·SEÑAL (VERDE/AMARILLO/ROJO) &rarr; 5·DECISIÓN DE NEGOCIO</strong> | Fuente: <strong>MySQL Tech Store (telemetria_eventos + pedidos)</strong></div>\n    </div>\n    <div style=\"background:rgba(255,255,255,0.12);padding:10px 14px;border-radius:8px;font-size:12px;line-height:1.5;border:1px solid rgba(255,255,255,0.18);\">\n      <div><strong>👤 Carlos Daniel López Hernández</strong> (096-19-5203) · <em>Desarrollador / DevOps</em></div>\n      <div><strong>👤 Victor Javier Castillo</strong> (092-19-7011) · <em>DBA</em></div>\n      <div><strong>👤 Oscar Geovany Ortíz Barillas</strong> (092-17-6969) · <em>Desarrollador</em></div>\n      <div><strong>👤 Emmanuel Alexander Ajsivinac Yoc</strong> (092-20-7654) · <em>Implementador &amp; Líder QA</em></div>\n    </div>\n  </div>\n</div>",
+                "mode": "html"
+            },
+            "title": "",
+            "transparent": true,
+            "type": "text"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "K01 / P1 (Carril Cliente): Solicitudes de compra registradas en las últimas 24h en MySQL (telemetria_eventos). Meta >= 100/día.",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "decimals": 0,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#C43E43",
+                                "value": null
+                            },
+                            {
+                                "color": "#E9A23B",
+                                "value": 70
+                            },
+                            {
+                                "color": "#228B5A",
+                                "value": 100
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 4,
+                "x": 0,
+                "y": 5
+            },
+            "id": 2,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "center",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "value_and_name"
+            },
+            "targets": [
+                {
+                    "expr": "ecommerce_kpi_k01_volumen_diario_solicitudes",
+                    "legendFormat": "Meta >= 100/día",
+                    "refId": "A"
+                }
+            ],
+            "title": "K01 · Volumen Solicitudes",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "K02 / P2 (Carril E-commerce): (Datos válidos / Evaluadas) * 100 medido en tiempo real desde MySQL. Meta >= 98%.",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "decimals": 2,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#C43E43",
+                                "value": null
+                            },
+                            {
+                                "color": "#E9A23B",
+                                "value": 95
+                            },
+                            {
+                                "color": "#228B5A",
+                                "value": 98
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 5,
+                "x": 4,
+                "y": 5
+            },
+            "id": 3,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "center",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "value_and_name"
+            },
+            "targets": [
+                {
+                    "expr": "ecommerce_kpi_k02_porcentaje_datos_validos",
+                    "legendFormat": "Meta >= 98%",
+                    "refId": "A"
+                }
+            ],
+            "title": "K02 · Calidad Datos Cliente",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "K03 / P3 (Carril E-commerce): (Con stock / Evaluadas) * 100 desde telemetría real MySQL. Meta >= 97%.",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "decimals": 2,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#C43E43",
+                                "value": null
+                            },
+                            {
+                                "color": "#E9A23B",
+                                "value": 90
+                            },
+                            {
+                                "color": "#228B5A",
+                                "value": 97
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 5,
+                "x": 9,
+                "y": 5
+            },
+            "id": 4,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "center",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "value_and_name"
+            },
+            "targets": [
+                {
+                    "expr": "ecommerce_kpi_k03_disponibilidad_stock_pct",
+                    "legendFormat": "Meta >= 97%",
+                    "refId": "A"
+                }
+            ],
+            "title": "K03 · Disponibilidad Stock",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "K04 / P4 (Carril E-commerce): (Pedidos creados / Solicitudes elegibles) * 100 desde MySQL. Meta >= 99%.",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "decimals": 2,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#C43E43",
+                                "value": null
+                            },
+                            {
+                                "color": "#E9A23B",
+                                "value": 97
+                            },
+                            {
+                                "color": "#228B5A",
+                                "value": 99
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 5,
+                "x": 14,
+                "y": 5
+            },
+            "id": 5,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "center",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "value_and_name"
+            },
+            "targets": [
+                {
+                    "expr": "ecommerce_kpi_k04_efectividad_creacion_pedidos_pct",
+                    "legendFormat": "Meta >= 99%",
+                    "refId": "A"
+                }
+            ],
+            "title": "K04 · Efectividad Creación",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "K05 (Carril Cliente / Checkout): (Checkouts abandonados / Checkouts iniciados) * 100 en tienda web real. Meta <= 20%.",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "decimals": 2,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#228B5A",
+                                "value": null
+                            },
+                            {
+                                "color": "#E9A23B",
+                                "value": 20.0001
+                            },
+                            {
+                                "color": "#C43E43",
+                                "value": 30.0001
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 5,
+                "x": 19,
+                "y": 5
+            },
+            "id": 6,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "center",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "value_and_name"
+            },
+            "targets": [
+                {
+                    "expr": "ecommerce_kpi_k05_tasa_abandono_checkout_pct",
+                    "legendFormat": "Meta <= 20%",
+                    "refId": "A"
+                }
+            ],
+            "title": "K05 (Nuevo) · Abandono Checkout",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "K06 (Carril E-commerce): Monto facturado real / Pedidos activos en tabla pedidos MySQL. Meta >= Q 250.",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "decimals": 2,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#C43E43",
+                                "value": null
+                            },
+                            {
+                                "color": "#E9A23B",
+                                "value": 150
+                            },
+                            {
+                                "color": "#228B5A",
+                                "value": 250
+                            }
+                        ]
+                    },
+                    "unit": "currencyGTQ"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 5,
+                "x": 0,
+                "y": 9
+            },
+            "id": 7,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "center",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "value_and_name"
+            },
+            "targets": [
+                {
+                    "expr": "ecommerce_kpi_k06_ticket_promedio_compra_quetzales",
+                    "legendFormat": "Meta >= Q 250",
+                    "refId": "A"
+                }
+            ],
+            "title": "K06 (Nuevo) · Ticket Promedio",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "K07 / P5 (Carril Almacén): (Liquidaciones <= 60 min / Total liquidados) * 100 en MySQL. Meta >= 95%.",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "decimals": 2,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#C43E43",
+                                "value": null
+                            },
+                            {
+                                "color": "#E9A23B",
+                                "value": 85
+                            },
+                            {
+                                "color": "#228B5A",
+                                "value": 95
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 5,
+                "x": 5,
+                "y": 9
+            },
+            "id": 8,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "center",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "value_and_name"
+            },
+            "targets": [
+                {
+                    "expr": "ecommerce_kpi_k07_liquidaciones_en_plazo_pct",
+                    "legendFormat": "Meta >= 95%",
+                    "refId": "A"
+                }
+            ],
+            "title": "K07 · Liquidaciones a Tiempo",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "K08 / P6 (Carril Almacén): Promedio real en minutos entre picking e inicio/fin de empaque en Bodega. Meta <= 30 min.",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "decimals": 1,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#228B5A",
+                                "value": null
+                            },
+                            {
+                                "color": "#E9A23B",
+                                "value": 30.0001
+                            },
+                            {
+                                "color": "#C43E43",
+                                "value": 45.0001
+                            }
+                        ]
+                    },
+                    "unit": "m"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 5,
+                "x": 10,
+                "y": 9
+            },
+            "id": 9,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "center",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "value_and_name"
+            },
+            "targets": [
+                {
+                    "expr": "ecommerce_kpi_k08_tiempo_promedio_empaque_min",
+                    "legendFormat": "Meta <= 30 min",
+                    "refId": "A"
+                }
+            ],
+            "title": "K08 · Tiempo Medio Empaque",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "K09 / P7 (Carril Almacén / Logística): (Despachos <= 8h / Total despachados) * 100 en MySQL. Meta >= 95%.",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "decimals": 2,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#C43E43",
+                                "value": null
+                            },
+                            {
+                                "color": "#E9A23B",
+                                "value": 85
+                            },
+                            {
+                                "color": "#228B5A",
+                                "value": 95
+                            }
+                        ]
+                    },
+                    "unit": "percent"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 5,
+                "x": 15,
+                "y": 9
+            },
+            "id": 10,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "center",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "value_and_name"
+            },
+            "targets": [
+                {
+                    "expr": "ecommerce_kpi_k09_cumplimiento_despacho_plazo_pct",
+                    "legendFormat": "Meta >= 95%",
+                    "refId": "A"
+                }
+            ],
+            "title": "K09 · Despacho en Plazo",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "K10 (Carril Logística): Promedio real de horas desde creación de solicitud hasta despacho en ruta. Meta <= 4 h.",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "decimals": 2,
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#228B5A",
+                                "value": null
+                            },
+                            {
+                                "color": "#E9A23B",
+                                "value": 4.0001
+                            },
+                            {
+                                "color": "#C43E43",
+                                "value": 6.0001
+                            }
+                        ]
+                    },
+                    "unit": "h"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 4,
+                "x": 20,
+                "y": 9
+            },
+            "id": 11,
+            "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "center",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "textMode": "value_and_name"
+            },
+            "targets": [
+                {
+                    "expr": "ecommerce_kpi_k10_lead_time_order_dispatch_horas",
+                    "legendFormat": "Meta <= 4 h",
+                    "refId": "A"
+                }
+            ],
+            "title": "K10 (Nuevo) · Lead Time Despacho",
+            "type": "stat"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Recorrido volumétrico desde que el Cliente decide comprar (P1) hasta Pedido Enviado (P7) a través de los 3 carriles del diagrama BPMN.",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "decimals": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#147D88",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 14
+            },
+            "id": 15,
+            "options": {
+                "displayMode": "gradient",
+                "minVizHeight": 16,
+                "minVizWidth": 8,
+                "namePlacement": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showUnfilled": true,
+                "valueMode": "color"
+            },
+            "targets": [
+                {
+                    "expr": "ecommerce_p1_solicitudes_registradas_total",
+                    "legendFormat": "P1 [Cliente] Solicitudes recibidas",
+                    "refId": "A"
+                },
+                {
+                    "expr": "ecommerce_p2_solicitudes_datos_validos_total",
+                    "legendFormat": "P2 [Sistema] Solicitudes con datos válidos",
+                    "refId": "B"
+                },
+                {
+                    "expr": "ecommerce_p3_solicitudes_con_stock_total",
+                    "legendFormat": "P3 [Sistema] Solicitudes con stock disponible",
+                    "refId": "C"
+                },
+                {
+                    "expr": "ecommerce_p4_pedidos_creados_total",
+                    "legendFormat": "P4 [Sistema] Pedidos creados (Pendiente despacho)",
+                    "refId": "D"
+                },
+                {
+                    "expr": "ecommerce_p5_liquidaciones_en_plazo_total",
+                    "legendFormat": "P5 [Almacén] Liquidaciones listas <= 60 min",
+                    "refId": "E"
+                },
+                {
+                    "expr": "ecommerce_p6_pedidos_empacados_total",
+                    "legendFormat": "P6 [Almacén] Pedidos preparados y empacados",
+                    "refId": "F"
+                },
+                {
+                    "expr": "ecommerce_p7_despachos_en_plazo_total",
+                    "legendFormat": "P7 [Almacén] Pedidos enviados en plazo (<= 8h)",
+                    "refId": "G"
+                }
+            ],
+            "title": "📦 Embudo del Proceso de Gestión de Pedidos por Carriles (Puntos Críticos P1 → P7)",
+            "type": "bargauge"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Incidencias y pérdidas operativas en cada punto crítico del proceso (P2 datos inválidos, P3 falta de stock, P4 fallo creación, P5 liquidación tardía, P7 despacho fuera de plazo).",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "decimals": 0,
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#228B5A",
+                                "value": null
+                            },
+                            {
+                                "color": "#E9A23B",
+                                "value": 1
+                            },
+                            {
+                                "color": "#C43E43",
+                                "value": 5
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 14
+            },
+            "id": 16,
+            "options": {
+                "displayMode": "lcd",
+                "minVizHeight": 16,
+                "minVizWidth": 8,
+                "namePlacement": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showUnfilled": true,
+                "valueMode": "color"
+            },
+            "targets": [
+                {
+                    "expr": "ecommerce_p2_solicitudes_datos_invalidos_total",
+                    "legendFormat": "P2 · Rechazadas por Datos Inválidos (Envío/Facturación)",
+                    "refId": "A"
+                },
+                {
+                    "expr": "ecommerce_p3_solicitudes_sin_stock_total",
+                    "legendFormat": "P3 · Rechazadas por Falta de Stock (Fin alternativo: Pedido no creado)",
+                    "refId": "B"
+                },
+                {
+                    "expr": "ecommerce_p4_pedidos_fallidos_creacion_total",
+                    "legendFormat": "P4 · Elegibles No Convertidas en Pedido",
+                    "refId": "C"
+                },
+                {
+                    "expr": "ecommerce_checkout_abandonados_total",
+                    "legendFormat": "K05 · Carritos Abandonados en Checkout",
+                    "refId": "D"
+                },
+                {
+                    "expr": "ecommerce_p5_liquidaciones_fuera_plazo_total",
+                    "legendFormat": "P5 · Liquidaciones para Facturar Fuera de Plazo (> 60 min)",
+                    "refId": "E"
+                },
+                {
+                    "expr": "ecommerce_p7_despachos_fuera_plazo_total",
+                    "legendFormat": "P7 · Despachos Fuera del Compromiso Operativo (> 8 horas)",
+                    "refId": "F"
+                }
+            ],
+            "title": "⚠️ Desglose de Fricciones, Quiebres de Stock y Retrasos por Punto Crítico",
+            "type": "bargauge"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Tendencia temporal en tiempo real de los indicadores porcentuales K02, K03, K04, K07 y K09.",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "% Cumplimiento",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 15,
+                        "gradientMode": "opacity",
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "showPoints": "auto",
+                        "spanNulls": false
+                    },
+                    "decimals": 2,
+                    "max": 100,
+                    "min": 0,
+                    "unit": "percent"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 22
+            },
+            "id": 17,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "min",
+                        "max"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "desc"
+                }
+            },
+            "targets": [
+                {
+                    "expr": "ecommerce_kpi_k02_porcentaje_datos_validos",
+                    "legendFormat": "K02 · Datos Válidos (Meta >= 98%)",
+                    "refId": "A"
+                },
+                {
+                    "expr": "ecommerce_kpi_k03_disponibilidad_stock_pct",
+                    "legendFormat": "K03 · Disponibilidad Stock (Meta >= 97%)",
+                    "refId": "B"
+                },
+                {
+                    "expr": "ecommerce_kpi_k04_efectividad_creacion_pedidos_pct",
+                    "legendFormat": "K04 · Efectividad Creación (Meta >= 99%)",
+                    "refId": "C"
+                },
+                {
+                    "expr": "ecommerce_kpi_k07_liquidaciones_en_plazo_pct",
+                    "legendFormat": "K07 · Liquidaciones <= 60m (Meta >= 95%)",
+                    "refId": "D"
+                },
+                {
+                    "expr": "ecommerce_kpi_k09_cumplimiento_despacho_plazo_pct",
+                    "legendFormat": "K09 · Despacho <= 8h (Meta >= 95%)",
+                    "refId": "E"
+                }
+            ],
+            "title": "📈 Evolución de Tasas de Conversión y Cumplimiento (K02, K03, K04, K07, K09)",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Monitoreo en serie de tiempo para K01 (Volumen diario de solicitudes) y K08 (Tiempo promedio de preparación y empaque en minutos).",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisPlacement": "auto",
+                        "drawStyle": "line",
+                        "fillOpacity": 20,
+                        "gradientMode": "opacity",
+                        "lineInterpolation": "smooth",
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "showPoints": "auto"
+                    },
+                    "decimals": 2
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 22
+            },
+            "id": 12,
+            "options": {
+                "legend": {
+                    "calcs": [
+                        "lastNotNull",
+                        "mean"
+                    ],
+                    "displayMode": "table",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "multi",
+                    "sort": "none"
+                }
+            },
+            "targets": [
+                {
+                    "expr": "ecommerce_kpi_k01_volumen_diario_solicitudes",
+                    "legendFormat": "K01 · Volumen Solicitudes/día (Meta >= 100)",
+                    "refId": "A"
+                },
+                {
+                    "expr": "ecommerce_kpi_k08_tiempo_promedio_empaque_min",
+                    "legendFormat": "K08 · Tiempo Promedio Empaque min/pedido (Meta <= 30m)",
+                    "refId": "B"
+                }
+            ],
+            "title": "⏱️ Volumen Diario de Solicitudes (K01) vs Tiempo Promedio de Empaque (K08)",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Matriz completa del modelo Evento -> KPI -> Umbral -> Señal -> Decisión de Negocio según las láminas 9, 10, 11 y 12 de la presentación.",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "align": "left",
+                        "cellOptions": {
+                            "type": "auto"
+                        },
+                        "inspect": false
+                    },
+                    "mappings": [
+                        {
+                            "options": {
+                                "0": {
+                                    "color": "#C43E43",
+                                    "index": 2,
+                                    "text": "🔴 ROJO (Crítico)"
+                                },
+                                "1": {
+                                    "color": "#E9A23B",
+                                    "index": 1,
+                                    "text": "🟡 AMARILLO (Preventivo)"
+                                },
+                                "2": {
+                                    "color": "#228B5A",
+                                    "index": 0,
+                                    "text": "🟢 VERDE (En Meta)"
+                                }
+                            },
+                            "type": "value"
+                        }
+                    ],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "#C43E43",
+                                "value": null
+                            },
+                            {
+                                "color": "#E9A23B",
+                                "value": 1
+                            },
+                            {
+                                "color": "#228B5A",
+                                "value": 2
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Value"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Señal Semáforo"
+                            },
+                            {
+                                "id": "custom.cellOptions",
+                                "value": {
+                                    "mode": "gradient",
+                                    "type": "color-background"
+                                }
+                            },
+                            {
+                                "id": "custom.width",
+                                "value": 180
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "kpi"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "KPI"
+                            },
+                            {
+                                "id": "custom.width",
+                                "value": 70
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "punto"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Punto"
+                            },
+                            {
+                                "id": "custom.width",
+                                "value": 70
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "carril"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Carril BPMN"
+                            },
+                            {
+                                "id": "custom.width",
+                                "value": 160
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "indicador"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Indicador de Negocio"
+                            },
+                            {
+                                "id": "custom.width",
+                                "value": 250
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "muestra"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Resultado / Muestra"
+                            },
+                            {
+                                "id": "custom.width",
+                                "value": 190
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "meta"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Meta"
+                            },
+                            {
+                                "id": "custom.width",
+                                "value": 110
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "accion_negocio"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "5 · Decisión / Acción de Negocio"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 14,
+                "x": 0,
+                "y": 30
+            },
+            "id": 13,
+            "options": {
+                "cellHeight": "sm",
+                "footer": {
+                    "countRows": false,
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true,
+                "sortBy": [
+                    {
+                        "desc": false,
+                        "displayName": "KPI"
+                    }
+                ]
+            },
+            "targets": [
+                {
+                    "expr": "ecommerce_kpi_semaforo_estado",
+                    "format": "table",
+                    "instant": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "🚦 Matriz Oficial de Observabilidad de Negocio (1·Evento → 2·KPI → 3·Umbral → 4·Señal → 5·Decisión)",
+            "transformations": [
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "Time": true,
+                            "__name__": true,
+                            "capa": true,
+                            "color": true,
+                            "componente": true,
+                            "curso": true,
+                            "grupo": true,
+                            "instance": true,
+                            "job": true,
+                            " proceso": true,
+                            "proceso": true,
+                            "proyecto": true
+                        },
+                        "indexByName": {
+                            "kpi": 0,
+                            "punto": 1,
+                            "carril": 2,
+                            "indicador": 3,
+                            "muestra": 4,
+                            "meta": 5,
+                            "Value": 6,
+                            "accion_negocio": 7
+                        }
+                    }
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "description": "Usuarios oficiales del Grupo #3 aprovisionados en Grafana y registrados en la telemetría del proyecto.",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "align": "left",
+                        "cellOptions": {
+                            "type": "auto"
+                        },
+                        "inspect": false
+                    },
+                    "mappings": [
+                        {
+                            "options": {
+                                "1": {
+                                    "color": "#228B5A",
+                                    "index": 0,
+                                    "text": "✅ ACTIVO"
+                                }
+                            },
+                            "type": "value"
+                        }
+                    ]
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "nombre"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Integrante Grupo #3"
+                            },
+                            {
+                                "id": "custom.width",
+                                "value": 210
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "carne"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Carné"
+                            },
+                            {
+                                "id": "custom.width",
+                                "value": 110
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "rol"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Rol en el Proyecto"
+                            },
+                            {
+                                "id": "custom.width",
+                                "value": 180
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "usuario_grafana"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Usuario Grafana"
+                            },
+                            {
+                                "id": "custom.width",
+                                "value": 135
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "rol_grafana"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Permiso"
+                            },
+                            {
+                                "id": "custom.width",
+                                "value": 85
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Value"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Estado"
+                            },
+                            {
+                                "id": "custom.width",
+                                "value": 95
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 10,
+                "x": 14,
+                "y": 30
+            },
+            "id": 14,
+            "options": {
+                "cellHeight": "sm",
+                "footer": {
+                    "countRows": false,
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true
+            },
+            "targets": [
+                {
+                    "expr": "ecommerce_equipo_integrante_info",
+                    "format": "table",
+                    "instant": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "👥 Integrantes y Usuarios Aprovisionados — Grupo #3 (Introducción a la Telemática)",
+            "transformations": [
+                {
+                    "id": "organize",
+                    "options": {
+                        "excludeByName": {
+                            "Time": true,
+                            "__name__": true,
+                            "capa": true,
+                            "carril": true,
+                            "componente": true,
+                            "curso": true,
+                            "email": true,
+                            "grupo": true,
+                            "instance": true,
+                            "job": true,
+                            "orden": true,
+                            "proceso": true,
+                            "proyecto": true
+                        },
+                        "indexByName": {
+                            "nombre": 0,
+                            "carne": 1,
+                            "rol": 2,
+                            "usuario_grafana": 3,
+                            "rol_grafana": 4,
+                            "Value": 5
+                        }
+                    }
+                }
+            ],
+            "type": "table"
+        }
+    ],
+    "refresh": "5s",
+    "schemaVersion": 39,
+    "tags": [
+        "telematica",
+        "grupo-3",
+        "ecommerce",
+        "k01-k10",
+        "negocio",
+        "prometheus",
+        "techstore"
+    ],
+    "templating": {
+        "list": []
+    },
+    "time": {
+        "from": "now-15m",
+        "to": "now"
+    },
+    "timepicker": [],
+    "timezone": "browser",
+    "title": "Observabilidad de la Gestión de Pedidos E-commerce — Grupo #3 (K01–K10)",
+    "uid": "ecommerce-grupo3-k01-k07",
+    "version": 1
+}

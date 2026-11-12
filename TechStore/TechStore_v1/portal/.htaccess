@@ -1,0 +1,40 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    Options -MultiViews -Indexes
+
+    # Bloquear archivos ocultos (excepto .well-known) y rutas sensibles
+    RewriteRule (?:^|/)\.(?!well-known) - [F,L]
+    RewriteRule ^config/ - [F,L]
+    RewriteRule ^sql/ - [F,L]
+    RewriteRule ^(Dockerfile|docker-compose.*\.yml|credenciales\.txt)$ - [F,L,NC]
+    RewriteRule \.(sql|md|sh|bat|env)$ - [F,L,NC]
+
+    # Si la ruta raíz se solicita directamente, servir index.php
+    DirectoryIndex index.php tienda.php inicio.php
+
+    # Alias semánticos amigables hacia módulos y paneles administrativos
+    RewriteRule ^productos/?$ adm-productos.php [L,QSA]
+    RewriteRule ^catalogo/?$ adm-productos.php [L,QSA]
+    RewriteRule ^pagina/?$ adm-pagina.php [L,QSA]
+    RewriteRule ^configuracion/?$ adm-pagina.php [L,QSA]
+    RewriteRule ^usuarios/?$ adm-usuarios.php [L,QSA]
+    RewriteRule ^roles/?$ adm-roles.php [L,QSA]
+    RewriteRule ^bitacora/?$ adm-bitacora.php [L,QSA]
+    RewriteRule ^carrito/?$ t-carrito.php [L,QSA]
+    RewriteRule ^checkout/?$ t-checkout.php [L,QSA]
+    RewriteRule ^cuenta/?$ t-cuenta.php [L,QSA]
+    RewriteRule ^mis-pedidos/?$ t-pedidos.php [L,QSA]
+
+    # Compatibilidad transparente con enlaces antiguos .html -> .php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^([a-zA-Z0-9_-]+)\.html$ $1.php [L,QSA]
+
+    # Si el archivo o directorio existe físicamente (css, js, assets, uploads, api.php), servirlo directo
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # URLs amigables sin extensión: /tienda -> tienda.php, /inicio -> inicio.php, /admin -> admin.php, etc.
+    RewriteCond %{REQUEST_FILENAME}.php -f
+    RewriteRule ^([a-zA-Z0-9_-]+)/?$ $1.php [L,QSA]
+</IfModule>

@@ -1,0 +1,95 @@
+# ==============================================================================
+# DOCKER COMPOSE: PORTAL TECH STORE (PHP 8.2 + MARIADB + PHPMYADMIN)
+# Proyecto Grupal: Observabilidad E-commerce de Cómputo — Grupo #3
+# Curso: Introducción a la Telemática
+# ==============================================================================
+
+name: techstore-portal
+
+services:
+  portal-db:
+    image: mariadb:10.11
+    container_name: techstore-db
+    restart: unless-stopped
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS:-PulsoRoot@2026}
+      - MYSQL_DATABASE=${DB_NAME:-digyfenix_pulso}
+      - MYSQL_USER=${DB_USER:-pulso_user}
+      - MYSQL_PASSWORD=${DB_PASS:-Pulso@2026}
+      - TZ=America/Guatemala
+    ports:
+      - "${DB_HOST_PORT:-3307}:3306"
+    volumes:
+      - portal-mysql-data:/var/lib/mysql
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 8s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks:
+      observability-net:
+        aliases:
+          - portal-db
+
+  portal-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: techstore-web
+    restart: unless-stopped
+    environment:
+      - DB_HOST=portal-db
+      - DB_PORT=3306
+      - DB_NAME=${DB_NAME:-digyfenix_pulso}
+      - DB_USER=${DB_USER:-pulso_user}
+      - DB_PASS=${DB_PASS:-Pulso@2026}
+      - TZ=America/Guatemala
+    ports:
+      - "${PORTAL_PORT:-8085}:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      portal-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(strpos((string)@file_get_contents('http://127.0.0.1/api.php?action=status'),'\"ok\":true')!==false ? 0 : 1);"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+    networks:
+      observability-net:
+        aliases:
+          - portal-web
+
+  portal-phpmyadmin:
+    image: phpmyadmin:5.2
+    container_name: techstore-phpmyadmin
+    restart: unless-stopped
+    environment:
+      - PMA_HOST=portal-db
+      - PMA_PORT=3306
+      - PMA_USER=${DB_USER:-pulso_user}
+      - PMA_PASSWORD=${DB_PASS:-Pulso@2026}
+      - UPLOAD_LIMIT=32M
+    ports:
+      - "${PHPMYADMIN_PORT:-8086}:80"
+    depends_on:
+      portal-db:
+        condition: service_healthy
+    networks:
+      observability-net:
+        aliases:
+          - portal-phpmyadmin
+
+volumes:
+  portal-mysql-data:
+    name: techstore_portal-mysql-data
+
+networks:
+  observability-net:
+    name: techstore_observability_net
+    external: true

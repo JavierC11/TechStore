@@ -1,0 +1,282 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": false,
+      "title": "📊 Volver al Dashboard de Negocio E-commerce (K01–K10)",
+      "tooltip": "Abrir tablero principal de la Capa de Negocio",
+      "type": "link",
+      "url": "/d/ecommerce-grupo3-k01-k07"
+    },
+    {
+      "asDropdown": false,
+      "icon": "bolt",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "🔥 Prometheus Web UI (Puerto 9090)",
+      "tooltip": "Abrir Prometheus",
+      "type": "link",
+      "url": "http://localhost:9090"
+    }
+  ],
+  "panels": [
+    {
+      "gridPos": { "h": 4, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "options": {
+        "code": { "language": "plaintext", "showLineNumbers": false, "showMiniMap": false },
+        "content": "<div style=\"background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%);padding:14px 20px;border-radius:10px;color:#fff;font-family:'Segoe UI',sans-serif;\">\n  <div style=\"font-size:11px;text-transform:uppercase;letter-spacing:1.2px;opacity:0.85;\">MANUAL TÉCNICO PROMETHEUS &bull; DESPLIEGUE DOCKER COMPOSE &bull; PRUEBAS DE CARGA CON AVALANCHE</div>\n  <div style=\"font-size:20px;font-weight:800;margin-top:2px;\">Telemetría Interna TSDB, Node Exporter y Benchmarking (Grupo #3 - Introducción a la Telemática)</div>\n  <div style=\"font-size:12px;opacity:0.9;margin-top:4px;\">Incluye las 4 consultas PromQL oficiales del Manual Técnico: <code>prometheus_tsdb_head_series</code> &bull; <code>rate(prometheus_tsdb_head_samples_appended_total[1m])</code> &bull; <code>process_resident_memory_bytes{job=\"prometheus\"}</code> &bull; <code>histogram_quantile(0.95, rate(prometheus_engine_query_duration_seconds_bucket[5m]))</code></div>\n</div>",
+        "mode": "html"
+      },
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Estado de los objetivos (Targets) configurados en prometheus.yml (1 = UP, 0 = DOWN).",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "mappings": [
+            {
+              "options": {
+                "0": { "color": "#C43E43", "index": 1, "text": "DOWN (Apagado / En espera)" },
+                "1": { "color": "#228B5A", "index": 0, "text": "UP (Operativo)" }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "#C43E43", "value": null },
+              { "color": "#228B5A", "value": 1 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 4, "w": 24, "x": 0, "y": 4 },
+      "id": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "textMode": "value_and_name"
+      },
+      "targets": [
+        {
+          "expr": "up",
+          "legendFormat": "Job: {{job}} ({{instance}})",
+          "refId": "A"
+        }
+      ],
+      "title": "🎯 Estado de Targets en Prometheus (Status → Targets)",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Consulta 1 del Manual Técnico: prometheus_tsdb_head_series — Cantidad de series activas en memoria (chunk Head de la TSDB). Con Avalanche activo sube en +10,000 series.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "drawStyle": "line", "fillOpacity": 20, "lineInterpolation": "smooth", "lineWidth": 2 },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "id": 3,
+      "options": {
+        "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true },
+        "tooltip": { "mode": "single" }
+      },
+      "targets": [
+        {
+          "expr": "prometheus_tsdb_head_series",
+          "legendFormat": "Series Activas en Memoria (prometheus_tsdb_head_series)",
+          "refId": "A"
+        }
+      ],
+      "title": "1️⃣ Series Activas en Memoria TSDB (prometheus_tsdb_head_series)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Consulta 2 del Manual Técnico: rate(prometheus_tsdb_head_samples_appended_total[1m]) — Muestras ingeridas por segundo.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "drawStyle": "line", "fillOpacity": 20, "lineInterpolation": "smooth", "lineWidth": 2 },
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "id": 4,
+      "options": {
+        "legend": { "calcs": ["lastNotNull", "mean", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true },
+        "tooltip": { "mode": "single" }
+      },
+      "targets": [
+        {
+          "expr": "rate(prometheus_tsdb_head_samples_appended_total[1m])",
+          "legendFormat": "Muestras/seg (rate(prometheus_tsdb_head_samples_appended_total[1m]))",
+          "refId": "A"
+        }
+      ],
+      "title": "2️⃣ Throughput de Ingesta: Muestras por Segundo",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Consulta 3 del Manual Técnico: process_resident_memory_bytes{job=\"prometheus\"} — Memoria RAM física (RSS) utilizada por el proceso de Prometheus.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "drawStyle": "line", "fillOpacity": 20, "lineInterpolation": "smooth", "lineWidth": 2 },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+      "id": 5,
+      "options": {
+        "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true },
+        "tooltip": { "mode": "single" }
+      },
+      "targets": [
+        {
+          "expr": "process_resident_memory_bytes{job=\"prometheus\"}",
+          "legendFormat": "Memoria Física RSS (process_resident_memory_bytes)",
+          "refId": "A"
+        }
+      ],
+      "title": "3️⃣ Consumo de Memoria RAM Física de Prometheus (RSS)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Consulta 4 del Manual Técnico: histogram_quantile(0.95, rate(prometheus_engine_query_duration_seconds_bucket[5m])) — Tiempo de respuesta de las consultas en el percentil 95.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "drawStyle": "line", "fillOpacity": 20, "lineInterpolation": "smooth", "lineWidth": 2 },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+      "id": 6,
+      "options": {
+        "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true },
+        "tooltip": { "mode": "multi" }
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, rate(prometheus_engine_query_duration_seconds_bucket[5m]))",
+          "legendFormat": "Latencia P95 ({{slice}})",
+          "refId": "A"
+        }
+      ],
+      "title": "4️⃣ Latencia P95 del Motor de Consultas PromQL",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Métricas del sistema operativo host recolectadas por Node Exporter (CPU ocupada %).",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "drawStyle": "line", "fillOpacity": 20, "lineInterpolation": "smooth", "lineWidth": 2 },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 24 },
+      "id": 7,
+      "options": {
+        "legend": { "calcs": ["lastNotNull", "mean"], "displayMode": "table", "placement": "bottom", "showLegend": true },
+        "tooltip": { "mode": "single" }
+      },
+      "targets": [
+        {
+          "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)",
+          "legendFormat": "Uso de CPU Host (%)",
+          "refId": "A"
+        }
+      ],
+      "title": "🖥️ Node Exporter — Uso de CPU de la Máquina Host",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Memoria RAM del sistema operativo host reportada por Node Exporter.",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "drawStyle": "line", "fillOpacity": 20, "lineInterpolation": "smooth", "lineWidth": 2 },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 24 },
+      "id": 8,
+      "options": {
+        "legend": { "calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true },
+        "tooltip": { "mode": "multi" }
+      },
+      "targets": [
+        {
+          "expr": "node_memory_MemTotal_bytes",
+          "legendFormat": "Memoria Total Host",
+          "refId": "A"
+        },
+        {
+          "expr": "node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes",
+          "legendFormat": "Memoria Usada Host",
+          "refId": "B"
+        }
+      ],
+      "title": "🧠 Node Exporter — Memoria Física de la Máquina Host",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 39,
+  "tags": ["prometheus", "node-exporter", "avalanche", "benchmark", "grupo-3"],
+  "templating": { "list": [] },
+  "time": { "from": "now-15m", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Manual Técnico Prometheus, Node Exporter y Benchmarking Avalanche — Grupo #3",
+  "uid": "prometheus-manual-tecnico-g3",
+  "version": 1
+}
+

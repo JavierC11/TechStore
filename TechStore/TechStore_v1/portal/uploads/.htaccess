@@ -1,0 +1,4 @@
+# Deshabilitar ejecución de scripts PHP dentro del directorio público de cargas
+<FilesMatch "\.(ph(p[0-9]?|t|tml)|cgi|pl|py|sh)$">
+    Require all denied
+</FilesMatch>

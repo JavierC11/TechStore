@@ -1,0 +1,45 @@
+Intrucciones Avance1
+
+Proyecto Grupal – Avance 1
+Definición del Proceso de Negocio e Indicadores de Observabilidad
+Objetivo: Identificar, definir y diseñar el proceso de negocio seleccionado por cada grupo, estableciendo los indicadores que permitirán evaluar su desempeño desde la capa de negocio de observabilidad.
+
+Instrucciones
+Cada grupo deberá preparar una presentación que incluya los siguientes apartados:
+
+Carátula: Nombre del proyecto, curso, número de grupo e integrantes.
+
+Perfil de los integrantes: Nombre, fotografía y breve descripción académica o profesional de cada integrante.
+
+Identificación del proceso: Indicar a qué etapa del ciclo de negocio pertenece el proceso seleccionado:
+
+Onboarding: Incorporación de nuevos clientes.
+
+Gestión u operación: Ejecución de procesos del negocio.
+
+Postventa: Atención y seguimiento posterior a la prestación del servicio.
+
+Definición del proceso de negocio: Describir su objetivo, alcance, actores involucrados, principales actividades y resultados esperados.
+
+Diseño del proceso: Elaborar un diagrama que represente gráficamente el flujo completo, identificando actividades, decisiones y puntos críticos.
+
+Indicadores de observabilidad – Capa de negocio: Definir los indicadores asociados al proceso diseñado, incluyendo:
+
+Nombre y descripción del indicador.
+
+Qué mide y cómo se calcula.
+
+Meta o resultado esperado.
+
+Umbrales de cumplimiento (semáforo verde, amarillo y rojo).
+
+Etapa del proceso a la que corresponde.
+
+Entregables del Avance 1
+Una presentación grupal que contenga los seis apartados solicitados.
+
+Entrega individual: Cada integrante deberá subir una copia de la misma presentación en este espacio.
+
+Exposición en clase: Todos los grupos deberán presentar y explicar el proceso seleccionado y sus indicadores.
+
+link de especificaciones https://docs.google.com/presentation/d/1rd88nhWX_QuEkJxevJIHbBMmU7IuOG51/edit?usp=drive_link&ouid=100720916208299274276&rtpof=true&sd=true

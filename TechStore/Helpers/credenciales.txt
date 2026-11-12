@@ -1,0 +1,49 @@
+====================================================================
+  DigyFenix | Pulso — Credenciales de Acceso, URLs Amigables y MySQL
+====================================================================
+
+1. ENLACES PRINCIPALES EN DOCKER (Puerto 8085)
+--------------------------------------------------------------------
+  Tienda Pública E-commerce : http://localhost:8085/tienda
+  Login del Personal / Admin: http://localhost:8085/login
+  Centro de Operaciones Hub : http://localhost:8085/inicio
+  Panel de Administración   : http://localhost:8085/admin
+  Gestor de Productos MySQL : http://localhost:8085/adm-productos  (o /productos)
+  Personalizar Página (CMS) : http://localhost:8085/adm-pagina     (o /pagina)
+  phpMyAdmin (MySQL Visual) : http://localhost:8086
+  Grafana Dashboards        : http://localhost:3000
+  Prometheus TSDB           : http://localhost:9090
+
+2. CUENTAS DEL PERSONAL (http://localhost:8085/login)
+--------------------------------------------------------------------
+  Área / Rol          Usuario               Contraseña         Nombre asignado
+  ------------------  --------------------  -----------------  -------------------------------
+  Administrador       df_admin              Fenix@Admin26      Valeria Morales
+  Contact Center      df_contact            Fenix@Contact26    Diego Herrera
+  Bodega              df_bodega             Fenix@Bodega26     Marco Tulio Reyes
+  Logística           df_logistica          Fenix@Logis26      Sofía Castellanos
+  Comercial           df_comercial          Fenix@Comercial26  Andrés Solórzano
+
+  Integrantes Grupo #3 (también habilitados en el portal):
+  Administrador       carlos.lopez          Fenix@Admin26      Carlos López (Grupo #3)
+  Comercial           victor.castillo       Fenix@Admin26      Víctor Castillo (Grupo #3)
+  Logística           oscar.ortiz           Fenix@Admin26      Oscar Ortiz (Grupo #3)
+  Bodega              emmanuel.ajsivinac    Fenix@Admin26      Emmanuel Ajsivinac (Grupo #3)
+
+3. CUENTA DE CLIENTE EN LA TIENDA (http://localhost:8085/t-cuenta)
+--------------------------------------------------------------------
+  Correo electrónico : cliente@demo.com
+  Contraseña         : Cliente@2026
+  Cliente vinculado  : CLI-0001 · Ana Lucía Morales Pérez
+
+4. BASE DE DATOS MYSQL / MARIADB (Contenedor: portal-db)
+--------------------------------------------------------------------
+  Host (desde Docker): portal-db (puerto 3306)
+  Host (desde Windows): 127.0.0.1 (puerto 3307)
+  Base de datos      : digyfenix_pulso
+  Usuario aplicación : pulso_user
+  Contraseña         : Pulso@2026
+  Usuario root       : root
+  Contraseña root    : PulsoRoot@2026
+  phpMyAdmin         : http://localhost:8086
+====================================================================

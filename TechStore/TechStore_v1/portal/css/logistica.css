@@ -1,0 +1,19 @@
+/* DigyFenix | Pulso — estilos compartidos de Logística */
+.gauge { display: flex; flex-direction: column; gap: 6px; --lv: #2fc986; }
+.gauge[data-lv="warn"] { --lv: #f4b63d; }
+.gauge[data-lv="bad"] { --lv: #ef5b66; }
+.g-h { display: flex; justify-content: space-between; gap: 10px; font-size: 12.5px; color: var(--muted); }
+.g-h b { color: #0f172a; font-weight: 600; font-variant-numeric: tabular-nums; }
+.g-bar { height: 9px; border-radius: 6px; background: #e2e8f0; overflow: hidden; }
+.g-bar i { display: block; height: 100%; border-radius: 6px; background: linear-gradient(90deg, color-mix(in srgb, var(--lv) 80%, #ffffff), var(--lv)); transition: width .5s cubic-bezier(.2,.8,.2,1); }
+
+.vico { --c: #0284c7; width: 46px; height: 46px; border-radius: 14px; flex: none; display: grid; place-items: center;
+  background: color-mix(in srgb, var(--c) 12%, #ffffff); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); }
+.vico svg { width: 24px; height: 24px; stroke: var(--c); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.kpi { padding: 16px 18px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); }
+.kpi .v { font-size: 30px; font-weight: 800; letter-spacing: -1px; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.kpi .l { margin-top: 6px; color: var(--muted); font-size: 13px; }
+.kpi .bar { margin-top: 10px; height: 3px; border-radius: 3px; background: var(--c, var(--orange)); width: 34px; }
+.muted { color: var(--muted); } .faint { color: var(--faint); }

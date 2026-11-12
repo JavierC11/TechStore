@@ -1,0 +1,28 @@
+# Sistemas operativos y temporales
+.DS_Store
+._*
+Thumbs.db
+*.tmp
+*.bak
+*.log
+
+# Python / PHP / Node caches y dependencias
+__pycache__/
+*.py[cod]
+.pytest_cache/
+vendor/
+node_modules/
+
+# Variables de entorno locales (usar .env.example como plantilla)
+.env
+.env.local
+*.env
+
+# Archivos multimedia subidos en ejecución local (conservar carpeta en Git)
+TechStore/TechStore_v1/portal/uploads/productos/*
+!TechStore/TechStore_v1/portal/uploads/productos/.gitkeep
+
+# Datos locales opcionales de contenedores fuera de volúmenes Docker
+prometheus_data/
+grafana_data/
+mysql_data/

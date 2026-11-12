@@ -1,0 +1,25 @@
+# ==============================================================================
+# PRUEBAS DE CARGA (BENCHMARKING) CON AVALANCHE
+# Manual Técnico Prometheus — Grupo #3 (Introducción a la Telemática)
+# ==============================================================================
+# Uso para iniciar la prueba (genera ~10,000 series = 100 métricas x 100 series):
+#   docker compose -f docker-compose.yml -f docker-compose.benchmark.yml up -d avalanche
+# Uso para detener y limpiar la prueba sin afectar Prometheus ni Grafana:
+#   docker compose -f docker-compose.yml -f docker-compose.benchmark.yml rm -sf avalanche
+# ==============================================================================
+
+services:
+  avalanche:
+    image: quay.io/prometheuscommunity/avalanche:main
+    container_name: techstore-avalanche
+    command:
+      - --metric-count=100
+      - --series-count=100
+      - --label-count=5
+      - --port=9001
+    ports:
+      - "9001:9001"
+    networks:
+      observability-net:
+        aliases:
+          - avalanche

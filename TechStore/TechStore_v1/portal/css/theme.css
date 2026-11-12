@@ -1,0 +1,93 @@
+/* Tema compartido DigyFenix | Pulso */
+:root {
+  --navy-900: #071a3d;
+  --navy-800: #0a2351;
+  --navy-700: #12306a;
+  --navy-100: #e6ebf5;
+  --orange-500: #f97316;
+  --orange-600: #ea580c;
+  --orange-100: #ffedd9;
+  --ink: #0f1b33;
+  --muted: #5b6784;
+  --line: #dde3ef;
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --ok: #1f9d63;
+  --danger: #d33f49;
+  --radius: 14px;
+  --font: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input { font-family: inherit; }
+
+/* ---------- Páginas internas provisionales ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 28px;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+}
+.topbar .brand { display: flex; align-items: center; gap: 12px; }
+.topbar .brand img { height: 38px; width: auto; display: block; }
+.topbar .brand .sep { width: 1px; height: 26px; background: var(--line); }
+.topbar .brand .product { font-weight: 700; color: var(--navy-800); letter-spacing: .2px; }
+.topbar .who { display: flex; align-items: center; gap: 14px; font-size: 14px; }
+.topbar .who .name { font-weight: 600; }
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--orange-100);
+  color: var(--orange-600);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .3px;
+}
+.btn-out {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--navy-800);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-out:hover { border-color: var(--navy-800); }
+a.btn-out { text-decoration: none; display: inline-block; }
+.topbar .actions { display: flex; align-items: center; gap: 8px; }
+
+.placeholder {
+  max-width: 760px;
+  margin: 72px auto;
+  padding: 0 24px;
+  text-align: center;
+}
+.placeholder .icon { height: 96px; margin-bottom: 18px; }
+.placeholder h1 { margin: 0 0 8px; font-size: 28px; color: var(--navy-800); }
+.placeholder p { margin: 6px 0; color: var(--muted); line-height: 1.55; }
+.placeholder .scope {
+  margin: 28px auto 0;
+  max-width: 560px;
+  background: var(--card);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  text-align: left;
+}
+.placeholder .scope h2 { margin: 0 0 8px; font-size: 14px; text-transform: uppercase; letter-spacing: .6px; color: var(--navy-700); }
+.placeholder .scope ul { margin: 0; padding-left: 18px; color: var(--muted); line-height: 1.7; }
