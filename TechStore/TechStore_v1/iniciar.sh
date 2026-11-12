@@ -9,18 +9,23 @@ echo "  PROYECTO: Tech Store Guatemala E-commerce (PHP + MySQL) + Observabilidad
 echo "  Curso: Introducción a la Telemática — Grupo #3"
 echo "============================================================================"
 
+if ! docker info >/dev/null 2>&1; then
+  echo "[ERROR] Docker Desktop no está en ejecución. Ábrelo primero y vuelve a intentar."
+  exit 1
+fi
+
 mkdir -p portal/uploads/productos
 
 echo "[1/2] Iniciando Observabilidad (Prometheus + Grafana + Node & E-commerce Exporters)..."
 docker compose -f docker-compose.yml up -d --force-recreate
 
 echo "[2/2] Iniciando Portal E-commerce Tech Store (Web PHP + MariaDB + phpMyAdmin)..."
-docker compose -f portal/docker-compose.yml up -d --build
+docker compose -f portal/docker-compose.yml up -d --build --force-recreate
 
 echo ""
 echo "Esperando a que Portal Web, MySQL y Grafana respondan..."
 sleep 4
-docker ps --filter "name=^techstore-" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+docker ps --filter "name=techstore-" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 
 echo ""
 echo "============================================================================"

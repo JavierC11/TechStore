@@ -7,19 +7,29 @@ echo   Curso: Introducción a la Telemática — Grupo #3
 echo ============================================================================
 cd /d "%~dp0"
 
+docker info >nul 2>&1
+if errorlevel 1 (
+    echo [ERROR] Docker Desktop no esta en ejecucion. Abrelo primero y vuelve a intentar.
+    pause
+    exit /b 1
+)
+
 if not exist "portal\uploads\productos" mkdir "portal\uploads\productos"
 
 echo [1/2] Iniciando Observabilidad (Prometheus + Grafana + Exporters)...
 docker compose -f docker-compose.yml up -d --force-recreate
 
 echo [2/2] Iniciando Portal E-commerce Tech Store (Web + MariaDB MySQL + phpMyAdmin)...
-docker compose -f portal\docker-compose.yml up -d --build
+docker compose -f portal\docker-compose.yml up -d --build --force-recreate
+
+echo Esperando a que Portal Web, MySQL y Grafana respondan...
+timeout /t 4 /nobreak >nul
 
 echo.
 echo ============================================================================
 echo   CONTENEDORES ACTIVOS (TECHSTORE-*):
 echo ============================================================================
-docker ps --filter "name=^techstore-" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+docker ps --filter "name=techstore-" --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 echo.
 echo ============================================================================
 echo   ACCESOS DIRECTOS DEL PROYECTO:
